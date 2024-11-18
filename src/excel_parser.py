@@ -3,7 +3,7 @@ import openpyxl
 import csv
 
 #directory for excel files
-directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/first_round_2024"
+directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/Accepted_2024_construction_only"
 #gets the excel files
 files = os.listdir(directory)
 #turns them into usable filepaths for method
@@ -76,7 +76,11 @@ def get_CTCHC_data(file_path):
 
     parking_spaces = ['Q494', 'M495', 'AH495']
 
-    cells_to_search = ['AD411', 'AD412']
+    GC_Fees = [
+        'B19', 'B20', 'B21', 'B23', 'B26', 'B31', 'B32', 'B33', 'B35', 'B38'
+    ]
+
+    cells_to_search = GC_Fees
 
     #load excel file
     workbook = openpyxl.load_workbook(file_path, data_only=True)
@@ -84,7 +88,7 @@ def get_CTCHC_data(file_path):
     #Select the sheet
     app = "Application"
     budg = 'Sources and Uses Budget'
-    sheet = workbook[app]
+    sheet = workbook[budg]
 
     #get the values
     cell_data = [sheet[i].value for i in cells_to_search]
@@ -157,7 +161,15 @@ def get_CTCHC_data(file_path):
 
         #single data point
         cell_data[0],
-        cell_data[1]
+        cell_data[1],
+        cell_data[2],
+        cell_data[3],
+        cell_data[4],
+        cell_data[5],
+        cell_data[6],
+        cell_data[7],
+        cell_data[8],
+        cell_data[9]
     ]
 
     print(f'data returned:{file_path}')
@@ -175,7 +187,14 @@ with open('stories.csv', 'w', newline='') as file:
     ]
     budg = ['land', 'hard', 'soft', 'arch', 'finance', 'dev']
 
-    fields = app
+    GC = [
+        'Requirements - Rehab', 'Overhead - Rehab', 'Profit - Rehab',
+        'Insurance - Rehab', 'Constr Costs - Rehab', 'Requirements - New',
+        'Overhead - New', 'Profit - New', 'Insurance - New',
+        'Constr Costs - New'
+    ]
+
+    fields = GC
 
     writer.writerow(fields)
     # for writing a list of lists

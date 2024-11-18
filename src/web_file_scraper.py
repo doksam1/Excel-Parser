@@ -46,11 +46,12 @@ def download_file(file_url, download_folder):
 
 # Example usage
 webpage_urls = [
-    'https://www.treasurer.ca.gov/ctcac/2023/firstround/applications/index.asp',
-    'https://www.treasurer.ca.gov/ctcac/2023/secondround/applications/index.asp',
-    'https://www.treasurer.ca.gov/ctcac/2023/thirdround/applications/index.asp',
-    'https://www.treasurer.ca.gov/ctcac/2022/firstround/applications/index.asp',
-    'https://www.treasurer.ca.gov/ctcac/2022/secondround/applications/index.asp'
+    'https://www.treasurer.ca.gov/ctcac/2024/firstround/index.asp'
+    # 'https://www.treasurer.ca.gov/ctcac/2023/firstround/index.asp',
+    # 'https://www.treasurer.ca.gov/ctcac/2023/secondround/applications/index.asp',
+    # 'https://www.treasurer.ca.gov/ctcac/2023/thirdround/applications/index.asp',
+    # 'https://www.treasurer.ca.gov/ctcac/2022/firstround/applications/index.asp',
+    # 'https://www.treasurer.ca.gov/ctcac/2022/secondround/applications/index.asp'
 ]  # Replace with the target webpage URL
 
 for link in webpage_urls:
