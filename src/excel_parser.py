@@ -3,7 +3,7 @@ import openpyxl
 import csv
 
 #directory for excel files
-directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/Accepted_2024_construction_only"
+directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/first_round_2024"
 #gets the excel files
 files = os.listdir(directory)
 #turns them into usable filepaths for method
@@ -48,6 +48,8 @@ def get_CTCHC_data(file_path):
         'B80', 'B96', 'B104', 'B13', 'B14', 'B27'
     ]
 
+    CPA = ['H311', 'H312', 'H313', 'H314', 'H315', 'H317']
+
     construction_financing = [['C554', 'M554', 'Q554', 'W554', 'AM554'],
                               ['C555', 'M555', 'Q555', 'W555', 'AM555'],
                               ['C556', 'M556', 'Q556', 'W556', 'AM556'],
@@ -77,10 +79,11 @@ def get_CTCHC_data(file_path):
     parking_spaces = ['Q494', 'M495', 'AH495']
 
     GC_Fees = [
-        'B19', 'B20', 'B21', 'B23', 'B26', 'B31', 'B32', 'B33', 'B35', 'B38'
+        'B17', 'B18', 'B19', 'B20', 'B21', 'B22', 'B23', 'B24', 'B26', 'B29',
+        'B30', 'B31', 'B32', 'B33', 'B34', 'B35', 'B36', 'B38'
     ]
 
-    cells_to_search = GC_Fees
+    cells_to_search = CPA
 
     #load excel file
     workbook = openpyxl.load_workbook(file_path, data_only=True)
@@ -88,7 +91,7 @@ def get_CTCHC_data(file_path):
     #Select the sheet
     app = "Application"
     budg = 'Sources and Uses Budget'
-    sheet = workbook[budg]
+    sheet = workbook[app]
 
     #get the values
     cell_data = [sheet[i].value for i in cells_to_search]
@@ -130,19 +133,41 @@ def get_CTCHC_data(file_path):
     #per value changes needed
 
     print(f'returning started:{file_path}')
+    # for finding rehab or new construction
+    # if cell_data[1] != 0:
+    #     to_return = [
+    #         app_number,
+    #         cell_data[0],
+    #         cell_data[1],
+    #         cell_data[2],
+    #         cell_data[3],
+    #         cell_data[4],
+    #         cell_data[5],
+    #         cell_data[6],
+    #         cell_data[7],
+    #         cell_data[8],
+    #     ]
+
+    # else:
+    #     to_return = [
+    #         app_number, cell_data[9], cell_data[10], cell_data[11],
+    #         cell_data[12], cell_data[13], cell_data[14], cell_data[15],
+    #         cell_data[16], cell_data[17]
+    #     ]
+    # default
     to_return = [
         app_number,
-        #     # land_cost, hard_cost, soft_cost, architectural_cost, finance_cost,
-        #     # developer_fee
-        #     # cell_data[0],
-        #     # cell_data[1] + cell_data[2] * cell_data[3],
-        #     # cell_data[4],
-        #     # cell_data[5],
-        #     # cell_data[6],
-        #     # cell_data[7],
-        #     # cell_data[8],
-        #     # cell_data[9],
-        #     # cell_data[10]
+        # land_cost, hard_cost, soft_cost, architectural_cost, finance_cost,
+        # developer_fee
+        # cell_data[0],
+        # cell_data[1] + cell_data[2] * cell_data[3],
+        # cell_data[4],
+        # cell_data[5],
+        # cell_data[6],
+        # cell_data[7],
+        # cell_data[8],
+        # cell_data[9],
+        # cell_data[10]
 
         #   various budget data
         #     # cell_data[0], cell_data[1], cell_data[2],
@@ -159,17 +184,13 @@ def get_CTCHC_data(file_path):
         # cell_data[1],
         # cell_data[2]
 
-        #single data point
+        # default
         cell_data[0],
         cell_data[1],
         cell_data[2],
         cell_data[3],
         cell_data[4],
-        cell_data[5],
-        cell_data[6],
-        cell_data[7],
-        cell_data[8],
-        cell_data[9]
+        cell_data[5]
     ]
 
     print(f'data returned:{file_path}')
@@ -179,7 +200,7 @@ def get_CTCHC_data(file_path):
 data = [get_CTCHC_data(i) for i in excel_paths]
 
 #writes excel spreadsheet data into a csv file
-with open('stories.csv', 'w', newline='') as file:
+with open('cpa_r1_2024.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     app = [
         'Units', 'NRSF', 'Prevailing Wage', 'Parking SF', 'Stories',
@@ -187,18 +208,19 @@ with open('stories.csv', 'w', newline='') as file:
     ]
     budg = ['land', 'hard', 'soft', 'arch', 'finance', 'dev']
 
-    GC = [
-        'Requirements - Rehab', 'Overhead - Rehab', 'Profit - Rehab',
-        'Insurance - Rehab', 'Constr Costs - Rehab', 'Requirements - New',
-        'Overhead - New', 'Profit - New', 'Insurance - New',
-        'Constr Costs - New'
+    agent = ['CPA', 'Address', 'City, State, Zip', 'Contact Person', 'Email']
+
+    GC2 = [
+        'Project Number', 'Site Work', 'Structures', 'Requirements',
+        'Overhead', 'Profit', 'Prevailing Wages', 'Insurance',
+        'Third Party Management', 'Constr Costs'
     ]
 
-    fields = GC
+    fields = agent
 
     writer.writerow(fields)
     # for writing a list of lists
     # for project in data:
-    #     writer.writerows(project)
+    # writer.writerows(project)
     # for writing a single table
     writer.writerows(data)
