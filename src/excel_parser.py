@@ -3,7 +3,7 @@ import openpyxl
 import csv
 
 #directory for excel files
-directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/first_round_2024"
+directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/firstround_2023"
 #gets the excel files
 files = os.listdir(directory)
 #turns them into usable filepaths for method
@@ -49,6 +49,10 @@ def get_CTCHC_data(file_path):
     ]
 
     CPA = ['H311', 'H312', 'H313', 'H314', 'H315', 'H317']
+    # because the ones from 2023 are slightly different
+    CPA2 = ['H310', 'H311', 'H312', 'H313', 'H314', 'H316']
+
+    expenses = ['AC885']
 
     construction_financing = [['C554', 'M554', 'Q554', 'W554', 'AM554'],
                               ['C555', 'M555', 'Q555', 'W555', 'AM555'],
@@ -83,7 +87,7 @@ def get_CTCHC_data(file_path):
         'B30', 'B31', 'B32', 'B33', 'B34', 'B35', 'B36', 'B38'
     ]
 
-    cells_to_search = CPA
+    cells_to_search = CPA2
 
     #load excel file
     workbook = openpyxl.load_workbook(file_path, data_only=True)
@@ -200,7 +204,7 @@ def get_CTCHC_data(file_path):
 data = [get_CTCHC_data(i) for i in excel_paths]
 
 #writes excel spreadsheet data into a csv file
-with open('cpa_r1_2024.csv', 'w', newline='') as file:
+with open('r1_2023_CPA.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     app = [
         'Units', 'NRSF', 'Prevailing Wage', 'Parking SF', 'Stories',
@@ -208,7 +212,10 @@ with open('cpa_r1_2024.csv', 'w', newline='') as file:
     ]
     budg = ['land', 'hard', 'soft', 'arch', 'finance', 'dev']
 
-    agent = ['CPA', 'Address', 'City, State, Zip', 'Contact Person', 'Email']
+    agent = [
+        'CPA', 'Address', 'City, State, Zip', 'Contact Person', 'Phone',
+        'Email'
+    ]
 
     GC2 = [
         'Project Number', 'Site Work', 'Structures', 'Requirements',
