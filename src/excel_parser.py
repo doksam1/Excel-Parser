@@ -3,7 +3,7 @@ import openpyxl
 import csv
 
 #directory for excel files
-directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/first_round_2024"
+directory = "C:/Users/Cameron S/Documents/Work/thirdround_2023"
 #gets the excel files
 files = os.listdir(directory)
 #turns them into usable filepaths for method
@@ -34,7 +34,8 @@ def get_CTCHC_data(file_path):
     #     property_manager_contact
     # ]
 
-    app_number = "CA-" + file_path.split('/')[7].split('.')[0]
+    app_number = "CA-" + file_path.split('/')[5]
+    # app_number = "CA-" + file_path.split('/')[7].split('.')[0]
 
     application_data = [
         'AG437', 'AG442', 'O773', 'T773', 'AG993', 'AG449', 'AD411', 'AE424',
@@ -200,7 +201,7 @@ def get_CTCHC_data(file_path):
 data = [get_CTCHC_data(i) for i in excel_paths]
 
 #writes excel spreadsheet data into a csv file
-with open('cpa_r1_2024.csv', 'w', newline='') as file:
+with open('cpa_r3_2023.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     app = [
         'Units', 'NRSF', 'Prevailing Wage', 'Parking SF', 'Stories',
@@ -208,7 +209,10 @@ with open('cpa_r1_2024.csv', 'w', newline='') as file:
     ]
     budg = ['land', 'hard', 'soft', 'arch', 'finance', 'dev']
 
-    agent = ['CPA', 'Address', 'City, State, Zip', 'Contact Person', 'Email']
+    agent = [
+        'App Number', 'Company Name', 'City, State, Zip', 'Address',
+        'Contact Person', 'Phone Number', 'Email'
+    ]
 
     GC2 = [
         'Project Number', 'Site Work', 'Structures', 'Requirements',
