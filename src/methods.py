@@ -89,11 +89,19 @@ class data_retrieval:
             'B29', 'B30', 'B31', 'B32', 'B33', 'B34', 'B35', 'B36', 'B38'
         ]
 
-        Miscellaneous_income = [
+        Misc_income_24 = [
             'Z813', 'Z814', 'Z815', 'P816', 'Z816', 'Z817', 'Z818'
         ]
 
-        cells_to_search = Miscellaneous_income
+        Misc_income_23 = [
+            'Z797', 'Z798', 'Z799', 'P800', 'Z800', 'Z801', 'Z802'
+        ]
+
+        Misc_income_22 = [
+            'Z811', 'Z812', 'Z813', 'P814', 'Z814', 'Z815', 'Z816'
+        ]
+
+        cells_to_search = Misc_income_22
 
         #load excel file
         workbook = openpyxl.load_workbook(file_path, data_only=True)

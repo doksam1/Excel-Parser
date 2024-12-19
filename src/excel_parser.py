@@ -4,7 +4,7 @@ import csv
 from methods import data_retrieval
 
 #directory for excel files
-directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/second_round_2024"
+directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/secondround_2022"
 #gets the excel files
 files = os.listdir(directory)
 #turns them into usable filepaths for method
@@ -15,7 +15,8 @@ excel_paths = [directory + "/" + i for i in files]
 data = [data_retrieval.get_CTCHC_data(i) for i in excel_paths]
 
 #writes excel spreadsheet data into a csv file
-with open('round2_app_data.csv', 'w', newline='') as file:
+folder_name = directory.split('/')[6]
+with open(folder_name + '_misc_income.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     app = [
         'App Number', 'Units', 'NRSF', 'Prevailing Wage', 'Parking SF',
