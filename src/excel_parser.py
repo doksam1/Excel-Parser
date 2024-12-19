@@ -15,7 +15,7 @@ excel_paths = [directory + "/" + i for i in files]
 data = [data_retrieval.get_CTCHC_data(i) for i in excel_paths]
 
 #writes excel spreadsheet data into a csv file
-folder_name = directory.split('/')[6]
+folder_name = directory.split('/')[len(directory.split('/')) - 1]
 with open(folder_name + '_misc_income.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     app = [

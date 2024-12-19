@@ -33,8 +33,9 @@ class data_retrieval:
         #     cpa_contact, appraiser, appraiser_contact, property_manager,
         #     property_manager_contact
         # ]
+        excel_name = file_path.split('/')[len(file_path.split('/')) - 1]
 
-        app_number = "CA-" + file_path.split('/')[7].split('.')[0]
+        app_number = "CA-" + excel_name.split('.')[0]
 
         application_data = [
             'AG437', 'AG442', 'O773', 'T773', 'AG993', 'AG449', 'AD411',
@@ -271,3 +272,16 @@ class data_retrieval:
 
                 # Download the .xlsx file
                 self.download_file(full_url, download_folder)
+
+    def get_cell_value(file_path, sheet_name, cell):
+
+        #load excel file
+        workbook = openpyxl.load_workbook(file_path)
+
+        #Select the sheet
+        sheet = workbook[sheet_name]
+
+        #get the value
+        value = sheet[cell].value
+
+        return value
