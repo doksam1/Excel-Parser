@@ -102,7 +102,54 @@ class data_retrieval:
             'Z811', 'Z812', 'Z813', 'P814', 'Z814', 'Z815', 'Z816'
         ]
 
-        cells_to_search = Misc_income_22
+        operating_expenses_proforma = [
+            'E15', 'E16', 'E17', 'E18', 'E19', 'E20', 'A21', 'E21'
+        ]
+
+        operating_expenses_proforma_22 = [
+            'E14', 'E15', 'E16', 'E17', 'E18', 'E19', 'A20', 'E20'
+        ]
+
+        attorneys = ['H295', 'H296', 'H297', 'H298', 'H299', 'H301']
+
+        consultants = ['H319', 'H320', 'H321', 'H322', 'H323', 'H325']
+
+        tax_professional = ['H303', 'H304', 'H305', 'H306', 'H307', 'H309']
+
+        GC = ['AA295', 'AA296', 'AA297', 'AA298', 'AA299', 'AA301']
+
+        energy_consultant = [
+            'AA303', 'AA304', 'AA305', 'AA306', 'AA307', 'AA309'
+        ]
+
+        investor = ['AA311', 'AA312', 'AA313', 'AA314', 'AA315', 'AA317']
+
+        market_analyst = ['AA319', 'AA320', 'AA321', 'AA322', 'AA323', 'AA325']
+
+        appraiser = ['H327', 'H328', 'H329', 'H330', 'H331', 'H333']
+
+        CNA_consultant = ['AA327', 'AA328', 'AA329', 'AA330', 'AA331', 'AA333']
+
+        cells_to_search = tax_professional + GC + energy_consultant + investor + market_analyst + appraiser + CNA_consultant
+
+        targets = {
+            'General App Data': application_data,
+            'expenses': expenses_per_unit,
+            'address': address,
+            'budget_and_sources': budget_and_sources,
+            'CPA_2024': CPA,
+            'CPA_2023': CPA2,
+            'expenses': expenses,
+            'construction_financing': construction_financing,
+            'permanent_financing': permanent_financing,
+            'parking_spaces': parking_spaces,
+            'GC_Fees': GC_Fees,
+            'Misc_income_22': Misc_income_22,
+            'Misc_income_23': Misc_income_23,
+            'Misc_income_24': Misc_income_24,
+            'operating_expenses_proforma': operating_expenses_proforma,
+            'operating_expenses_proforam': operating_expenses_proforma_22
+        }
 
         #load excel file
         workbook = openpyxl.load_workbook(file_path, data_only=True)
@@ -110,6 +157,7 @@ class data_retrieval:
         #Select the sheet
         app = "Application"
         budg = 'Sources and Uses Budget'
+        proforma = '15 Year Pro Forma'
         sheet = workbook[app]
 
         #get the values
@@ -173,8 +221,10 @@ class data_retrieval:
         #         cell_data[12], cell_data[13], cell_data[14], cell_data[15],
         #         cell_data[16], cell_data[17]
         #     ]
+
         # default
         to_return = [app_number] + cell_data
+
         # land_cost, hard_cost, soft_cost, architectural_cost, finance_cost,
         # developer_fee
         # cell_data[0],
@@ -213,8 +263,6 @@ class data_retrieval:
         #expenses_per_unit
         # cell_data[0],
         # cell_data[1]
-
-        # misc income
 
         print(f'data returned:{file_path}')
         return to_return

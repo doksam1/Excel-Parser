@@ -1,10 +1,9 @@
 import os
-import openpyxl
 import csv
 from methods import data_retrieval
 
 #directory for excel files
-directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/secondround_2022"
+directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/first_round_2024"
 #gets the excel files
 files = os.listdir(directory)
 #turns them into usable filepaths for method
@@ -16,17 +15,22 @@ data = [data_retrieval.get_CTCHC_data(i) for i in excel_paths]
 
 #writes excel spreadsheet data into a csv file
 folder_name = directory.split('/')[len(directory.split('/')) - 1]
-with open(folder_name + '_misc_income.csv', 'w', newline='') as file:
+with open(
+        folder_name + '_consultant.csv',
+        'w',
+        encoding='utf-8',
+        newline='',
+) as file:
     writer = csv.writer(file)
     app = [
-        'App Number', 'Units', 'NRSF', 'Prevailing Wage', 'Parking SF',
-        'Stories', "Buildings", 'Architect', 'Parking Spaces', 'Subterranean?'
+        'Units', 'NRSF', 'Prevailing Wage', 'Parking SF', 'Stories',
+        "Buildings", 'Architect', 'Parking Spaces', 'Subterranean?'
     ]
     budg = ['land', 'hard', 'soft', 'arch', 'finance', 'dev']
 
     agent = [
-        'App Number', 'CPA', 'Address', 'City, State, Zip', 'Contact Person',
-        'Phone', 'Email'
+        'CPA', 'Address', 'City, State, Zip', 'Contact Person', 'Phone',
+        'Email'
     ]
 
     GC2 = [
@@ -35,15 +39,63 @@ with open(folder_name + '_misc_income.csv', 'w', newline='') as file:
         'Third Party Management', 'Constr Costs'
     ]
 
-    expenses_per_unit = ['App Number', 'Units', 'Total Annual Expenses']
+    expenses_per_unit = ['Units', 'Total Annual Expenses']
 
     misc_income = [
-        'App Number', 'Annual Laundry Income', 'Annual Vending Machine Income',
+        'Annual Laundry Income', 'Annual Vending Machine Income',
         'Annual Interest Income', 'Other - Specified', 'Other Income',
         'Total Misc Income', 'Total Annual Potential Gross Income'
     ]
 
-    fields = misc_income
+    operating_expenses = [
+        'admin', 'management', 'utilities', 'payroll & payroll taxes',
+        'insurance', 'maintenance', 'Other-specify', 'Other'
+    ]
+
+    attorneys = [
+        'Attorney', 'Address', 'City, State, Zip', 'Contact', 'Phone', 'Email'
+    ]
+
+    consultants = [
+        'Consultant', 'Address', 'City, State, Zip', 'Contact', 'Phone',
+        'Email'
+    ]
+
+    GC = [
+        'General Contractor', 'Address', 'City, State, Zip', 'Contact',
+        'Phone', 'Email'
+    ]
+
+    tax_professional = [
+        'Tax Professional', 'Address', 'City, State, Zip', 'Contact', 'Phone',
+        'Email'
+    ]
+
+    energy_consultant = [
+        'Energy_Consultant', 'Address', 'City, State, Zip', 'Contact', 'Phone',
+        'Email'
+    ]
+
+    investor = [
+        'Investor', 'Address', 'City, State, Zip', 'Contact', 'Phone', 'Email'
+    ]
+
+    market_analyst = [
+        'Analyst', 'Address', 'City, State, Zip', 'Contact', 'Phone', 'Email'
+    ]
+
+    appraiser = [
+        'Appraiser', 'Address', 'City, State, Zip', 'Contact', 'Phone', 'Email'
+    ]
+
+    CNA_consultant = [
+        'Consultant', 'Address', 'City, State, Zip', 'Contact', 'Phone',
+        'Email'
+    ]
+
+    fields = [
+        'App Number'
+    ] + tax_professional + GC + energy_consultant + investor + market_analyst + appraiser + CNA_consultant
 
     writer.writerow(fields)
     # for writing a list of lists
