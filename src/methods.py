@@ -110,17 +110,40 @@ class data_retrieval:
             'E14', 'E15', 'E16', 'E17', 'E18', 'E19', 'A20', 'E20'
         ]
 
+        GP1 = [
+            'M243', 'AF243', 'M244', 'M245', 'W245', 'AC245', 'M246', 'AH246',
+            'M247', 'M248', 'M249'
+        ]
+
+        GP2 = [
+            'M251', 'AF251', 'M252', 'M253', 'W253', 'AC253', 'M254', 'AH254',
+            'M255', 'M256', 'M257'
+        ]
+
+        GP3 = [
+            'M259', 'AF259', 'M260', 'M261', 'W261', 'AC261', 'M262', 'AH262',
+            'M263', 'M264', 'M265'
+        ]
+
+        contact_person_during_apps = [
+            'L274', 'L275', 'L276', 'V276', 'AB276', 'L277', 'L278', 'L279'
+        ]
+
+        developer = ['H287', 'H288', 'H289', 'H290', 'H291', 'H293']
+
+        architect = ['AA287', 'AA288', 'AA289', 'AA290', 'AA291', 'AA293']
+
         attorneys = ['H295', 'H296', 'H297', 'H298', 'H299', 'H301']
 
-        consultants = ['H319', 'H320', 'H321', 'H322', 'H323', 'H325']
+        GC = ['AA295', 'AA296', 'AA297', 'AA298', 'AA299', 'AA301']
 
         tax_professional = ['H303', 'H304', 'H305', 'H306', 'H307', 'H309']
-
-        GC = ['AA295', 'AA296', 'AA297', 'AA298', 'AA299', 'AA301']
 
         energy_consultant = [
             'AA303', 'AA304', 'AA305', 'AA306', 'AA307', 'AA309'
         ]
+
+        consultants = ['H319', 'H320', 'H321', 'H322', 'H323', 'H325']
 
         investor = ['AA311', 'AA312', 'AA313', 'AA314', 'AA315', 'AA317']
 
@@ -130,26 +153,32 @@ class data_retrieval:
 
         CNA_consultant = ['AA327', 'AA328', 'AA329', 'AA330', 'AA331', 'AA333']
 
-        cells_to_search = tax_professional + GC + energy_consultant + investor + market_analyst + appraiser + CNA_consultant
+        Bond_issuer = ['H335', 'H336', 'H337', 'H338', 'H339', 'H341']
 
-        targets = {
-            'General App Data': application_data,
-            'expenses': expenses_per_unit,
-            'address': address,
-            'budget_and_sources': budget_and_sources,
-            'CPA_2024': CPA,
-            'CPA_2023': CPA2,
-            'expenses': expenses,
-            'construction_financing': construction_financing,
-            'permanent_financing': permanent_financing,
-            'parking_spaces': parking_spaces,
-            'GC_Fees': GC_Fees,
-            'Misc_income_22': Misc_income_22,
-            'Misc_income_23': Misc_income_23,
-            'Misc_income_24': Misc_income_24,
-            'operating_expenses_proforma': operating_expenses_proforma,
-            'operating_expenses_proforam': operating_expenses_proforma_22
-        }
+        prop_mgmt = ['AA335', 'AA336', 'AAA337', 'AA338', 'AA339', 'AA341']
+
+        subsidy_info = [
+            'M954', 'M955', 'J956', 'M957', 'M958', 'M959', 'M960', 'M961',
+            'AE954', 'AE955', 'AB956', 'AE957', 'AE958', 'AE959', 'AE960',
+            'AE961'
+        ]
+
+        pre_existing_subsidies = [
+            'M966', 'M967', 'M968', 'M969', 'M970', 'M971', 'M972', 'O973',
+            'M974', 'AA966', 'AA967', 'AA968', 'AA969', 'AA970', 'AA973',
+            'AA974'
+        ]
+
+        service_amenities = ['E27']
+
+        num_beds = [
+            'O756', 'J773', 'O773', 'J774', 'O774', 'J775', 'O775', 'J776',
+            'O776'
+        ]
+
+        hard_cost_contingency = ['B79']
+
+        cells_to_search = hard_cost_contingency
 
         #load excel file
         workbook = openpyxl.load_workbook(file_path, data_only=True)
@@ -158,7 +187,7 @@ class data_retrieval:
         app = "Application"
         budg = 'Sources and Uses Budget'
         proforma = '15 Year Pro Forma'
-        sheet = workbook[app]
+        sheet = workbook[budg]
 
         #get the values
         cell_data = [sheet[i].value for i in cells_to_search]
