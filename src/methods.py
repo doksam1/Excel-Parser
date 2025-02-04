@@ -4,6 +4,8 @@ import shutil
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+import tkinter as tk
+from tkinter import filedialog
 
 
 class data_retrieval:
@@ -11,7 +13,10 @@ class data_retrieval:
     def __init__(self):
         pass
 
-    def get_CTCHC_data(file_path):
+    def flatten(xss):
+        return [x for xs in xss for x in xs]
+
+    def get_CTCHC_data_simple(self, file_path):
         # name = 'H18'
         # address = 'I185'
         # project_type = 'D211'
@@ -33,9 +38,6 @@ class data_retrieval:
         #     cpa_contact, appraiser, appraiser_contact, property_manager,
         #     property_manager_contact
         # ]
-        excel_name = file_path.split('/')[len(file_path.split('/')) - 1]
-
-        app_number = "CA-" + excel_name.split('.')[0]
 
         application_data = [
             'AG437', 'AG442', 'O773', 'T773', 'AG993', 'AG449', 'AD411',
@@ -70,6 +72,11 @@ class data_retrieval:
                                   ['C564', 'M564', 'Q564', 'W564', 'AM564'],
                                   ['C565', 'M565', 'Q565', 'W565', 'AM565']]
 
+        construction_financing_names = [
+            'C554', 'C555', 'C556', 'C557', 'C558', 'C559', 'C560', 'C561',
+            'C562', 'C563', 'C564', 'C565'
+        ]
+
         permanent_financing = [['C627', 'M627', 'Q627', 'W627', 'AO627'],
                                ['C628', 'M628', 'Q628', 'W628', 'AO628'],
                                ['C629', 'M629', 'Q629', 'W629', 'AO629'],
@@ -82,6 +89,11 @@ class data_retrieval:
                                ['C636', 'M636', 'Q636', 'W636', 'AO636'],
                                ['C637', 'M637', 'Q637', 'W637', 'AO637'],
                                ['C638', 'M638', 'Q638', 'W638', 'AO638']]
+
+        permanent_financing_names = [
+            'C627', 'C628', 'C629', 'C630', 'C631', 'C632', 'C633', 'C634',
+            'C635', 'C636', 'C637', 'C638'
+        ]
 
         parking_spaces = ['Q494', 'M495', 'AH495']
 
@@ -155,7 +167,9 @@ class data_retrieval:
 
         Bond_issuer = ['H335', 'H336', 'H337', 'H338', 'H339', 'H341']
 
-        prop_mgmt = ['AA335', 'AA336', 'AAA337', 'AA338', 'AA339', 'AA341']
+        prop_mgmt = ['AA335', 'AA336', 'AA337', 'AA338', 'AA339', 'AA341']
+
+        prop_mgmt_2 = ['P343', 'P344', 'P345', 'P346', 'P347', 'P349']
 
         subsidy_info = [
             'M954', 'M955', 'J956', 'M957', 'M958', 'M959', 'M960', 'M961',
@@ -171,130 +185,22 @@ class data_retrieval:
 
         service_amenities = ['E27']
 
-        num_beds = [
-            'O756', 'J773', 'O773', 'J774', 'O774', 'J775', 'O775', 'J776',
-            'O776'
-        ]
+        num_beds = ['M18']
 
         hard_cost_contingency = ['B79']
 
-        cells_to_search = hard_cost_contingency
+        management_fee = ['W849']
 
-        #load excel file
-        workbook = openpyxl.load_workbook(file_path, data_only=True)
+        #choose what cells to search
+        cells_to_search = num_beds
 
         #Select the sheet
         app = "Application"
         budg = 'Sources and Uses Budget'
         proforma = '15 Year Pro Forma'
-        sheet = workbook[budg]
+        tie_breaker = 'Tie Breaker'
 
-        #get the values
-        cell_data = [sheet[i].value for i in cells_to_search]
-
-        #for getting financial data
-        # cell_data = []
-        # for row in cells_to_search:
-        #     lender = sheet[row[0]].value
-        #     source = sheet[row[1]].value
-        #     term = sheet[row[2]].value
-        #     interest = sheet[row[3]].value
-        #     funds = sheet[row[4]].value
-        #     cell_data.append([app_number, lender, source, term, interest, funds])
-
-        #removes null values
-        # for j in range(len(cell_data)):
-        #     if cell_data[j] is None:
-        #         cell_data[j] = 'None'
-
-        # for j in range(len(cell_data) - 1, -1, -1):
-        #     if cell_data[j][5] is None:
-        #         cell_data.pop(j)
-
-        #per value changes needed
-        # if isinstance(cell_data[1], str) or isinstance(
-        #         cell_data[2], str) or isinstance(cell_data[3], str):
-        #     cell_data[1] = 0
-        #     cell_data[2] = 0
-        #     cell_data[3] = 0
-        #     print(f'skipped numbers for this:{file_path}')
-
-        # land_cost = cell_data[0] + cell_data[13] + cell_data[14]
-        # hard_cost = cell_data[1] + cell_data[2] + cell_data[9] + cell_data[15]
-        # soft_cost = cell_data[7] + cell_data[8] + cell_data[10] + cell_data[11]
-        # architectural_cost = cell_data[3] + cell_data[4]
-        # finance_cost = cell_data[5] + cell_data[6]
-        # developer_fee = cell_data[12]
-
-        #per value changes needed
-
-        print(f'returning started:{file_path}')
-        # for finding rehab or new construction
-        # if cell_data[1] != 0:
-        #     to_return = [
-        #         app_number,
-        #         cell_data[0],
-        #         cell_data[1],
-        #         cell_data[2],
-        #         cell_data[3],
-        #         cell_data[4],
-        #         cell_data[5],
-        #         cell_data[6],
-        #         cell_data[7],
-        #         cell_data[8],
-        #     ]
-
-        # else:
-        #     to_return = [
-        #         app_number, cell_data[9], cell_data[10], cell_data[11],
-        #         cell_data[12], cell_data[13], cell_data[14], cell_data[15],
-        #         cell_data[16], cell_data[17]
-        #     ]
-
-        # default
-        to_return = [app_number] + cell_data
-
-        # land_cost, hard_cost, soft_cost, architectural_cost, finance_cost,
-        # developer_fee
-        # cell_data[0],
-        # cell_data[1] + cell_data[2] * cell_data[3],
-        # cell_data[4],
-        # cell_data[5],
-        # cell_data[6],
-        # cell_data[7],
-        # cell_data[8],
-        # cell_data[9],
-        # cell_data[10]
-
-        #   various budget data
-        #     # cell_data[0], cell_data[1], cell_data[2],
-        #     # cell_data[3] + ' - ' + cell_data[4],
-        #     # cell_data[5] + ' - ' + cell_data[6],
-        #     # cell_data[7] + ' - ' + cell_data[8],
-        #     # cell_data[9] + ' - ' + cell_data[10],
-        #     # cell_data[11] + ' - ' + cell_data[12],
-        #     # cell_data[13] + ' - ' + cell_data[14]
-        #     cell_data[0]
-
-        # parking data
-        # cell_data[0],
-        # cell_data[1],
-        # cell_data[2]
-
-        # CPA
-        # cell_data[0],
-        # cell_data[1],
-        # cell_data[2],
-        # cell_data[3],
-        # cell_data[4],
-        # cell_data[5]
-
-        #expenses_per_unit
-        # cell_data[0],
-        # cell_data[1]
-
-        print(f'data returned:{file_path}')
-        return to_return
+        return self.get_CTCHC_data(file_path, cells_to_search, tie_breaker)
 
     def find_and_move_files_by_name(source_folder, destination_folder,
                                     search_string):
@@ -362,3 +268,142 @@ class data_retrieval:
         value = sheet[cell].value
 
         return value
+
+    def get_CTCHC_data(self, file_path: str, cells: list[str], sheet: str):
+        excel_name = file_path.split('/')[len(file_path.split('/')) - 1]
+
+        app_number = "CA-" + excel_name.split('.')[0]
+
+        #choose what cells to search
+        cells_to_search = cells
+
+        #load excel file
+        workbook = openpyxl.load_workbook(file_path, data_only=True)
+
+        sheet = workbook[sheet]
+
+        print(f'returning started:{file_path}')
+
+        #get the values
+        cell_data = [sheet[i].value for i in cells_to_search]
+
+        #for getting financial data
+        # cell_data = []
+        # for row in cells_to_search:
+        #     lender = sheet[row[0]].value
+        #     if lender == None:
+        #         break
+        #     source = sheet[row[1]].value
+        #     term = sheet[row[2]].value
+        #     interest = sheet[row[3]].value
+        #     funds = sheet[row[4]].value
+        #     cell_data.append([app_number, lender, source, term, interest, funds])
+
+        # land_cost = cell_data[0] + cell_data[13] + cell_data[14]
+        # hard_cost = cell_data[1] + cell_data[2] + cell_data[9] + cell_data[15]
+        # soft_cost = cell_data[7] + cell_data[8] + cell_data[10] + cell_data[11]
+        # architectural_cost = cell_data[3] + cell_data[4]
+        # finance_cost = cell_data[5] + cell_data[6]
+        # developer_fee = cell_data[12]
+
+        #per value changes needed
+
+        # for finding rehab or new construction
+        # if cell_data[1] != 0:
+        #     to_return = [
+        #         app_number,
+        #         cell_data[0],
+        #         cell_data[1],
+        #         cell_data[2],
+        #         cell_data[3],
+        #         cell_data[4],
+        #         cell_data[5],
+        #         cell_data[6],
+        #         cell_data[7],
+        #         cell_data[8],
+        #     ]
+
+        # else:
+        #     to_return = [
+        #         app_number, cell_data[9], cell_data[10], cell_data[11],
+        #         cell_data[12], cell_data[13], cell_data[14], cell_data[15],
+        #         cell_data[16], cell_data[17]
+        #     ]
+
+        # default
+        to_return = [app_number] + cell_data
+
+        # land_cost, hard_cost, soft_cost, architectural_cost, finance_cost,
+        # developer_fee
+        # cell_data[0],
+        # cell_data[1] + cell_data[2] * cell_data[3],
+        # cell_data[4],
+        # cell_data[5],
+        # cell_data[6],
+        # cell_data[7],
+        # cell_data[8],
+        # cell_data[9],
+        # cell_data[10]
+
+        #   various budget data
+        #     # cell_data[0], cell_data[1], cell_data[2],
+        #     # cell_data[3] + ' - ' + cell_data[4],
+        #     # cell_data[5] + ' - ' + cell_data[6],
+        #     # cell_data[7] + ' - ' + cell_data[8],
+        #     # cell_data[9] + ' - ' + cell_data[10],
+        #     # cell_data[11] + ' - ' + cell_data[12],
+        #     # cell_data[13] + ' - ' + cell_data[14]
+        #     cell_data[0]
+
+        # parking data
+        # cell_data[0],
+        # cell_data[1],
+        # cell_data[2]
+
+        # CPA
+        # cell_data[0],
+        # cell_data[1],
+        # cell_data[2],
+        # cell_data[3],
+        # cell_data[4],
+        # cell_data[5]
+
+        #expenses_per_unit
+        # cell_data[0],
+        # cell_data[1]
+
+        print(f'data returned:{file_path}')
+        return to_return
+
+    def select_load_directory():
+        root = tk.Tk()
+        root.withdraw()
+        root.attributes('-topmost', True)
+        folder_path = filedialog.askdirectory(
+            title='Select folder that contains files to load:')
+        if folder_path:
+            print(f"Selected directory: {folder_path}")
+            return folder_path
+
+        else:
+            print("No directory selected.")
+            return None
+
+    def select_save_directory():
+        root = tk.Tk()
+        root.withdraw()
+        root.attributes('-topmost', True)
+        folder_path = filedialog.askdirectory(
+            title='Select folder where you want to save your files:')
+        if folder_path:
+            print(f"Selected directory: {folder_path}")
+            return folder_path
+
+        else:
+            print("No directory selected.")
+            return None
+
+    def get_search_values():
+        user_input = input(
+            "Enter the values to serach for, separated by commas:")
+        return [value.strip() for value in user_input.split(",")]

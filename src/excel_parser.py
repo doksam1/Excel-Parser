@@ -4,7 +4,9 @@ from methods import data_retrieval
 
 #directory for excel files
 
-directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/second_round_2024"
+directory = "C:/Users/cameronshaw/Documents/Affordable Research/All Applications Since 2022/2024_Applications"
+saving_directory = "C:/Users/cameronshaw/Documents/Affordable Research/Stats and Documents/Data/raw/"
+dr = data_retrieval()
 #gets the excel files
 files = os.listdir(directory)
 #turns them into usable filepaths for method
@@ -12,15 +14,15 @@ excel_paths = [directory + "/" + i for i in files]
 
 #gets usable CTCHC data from excel spreadsheet
 
-data = [data_retrieval.get_CTCHC_data(i) for i in excel_paths]
+data = [dr.get_CTCHC_data_simple(i) for i in excel_paths]
 
 #change this to change the name of the file
-file_type = 'num_beds'
+file_type = 'permanent_financial'
 
 #writes excel spreadsheet data into a csv file
 folder_name = directory.split('/')[len(directory.split('/')) - 1]
 with open(
-        folder_name + '_' + file_type + '.csv',
+        saving_directory + folder_name + '_' + file_type + '.csv',
         'w',
         encoding='utf-8',
         newline='',
@@ -36,6 +38,8 @@ with open(
         'CPA', 'Address', 'City, State, Zip', 'Contact Person', 'Phone',
         'Email'
     ]
+
+    financing = ['lender', 'source', 'term', 'interest', 'funds']
 
     GC2 = [
         'Project Number', 'Site Work', 'Structures', 'Requirements',
@@ -153,16 +157,17 @@ with open(
 
     service_amenities = ['Service Amenities']
 
-    Num_beds = ['Num Beds']
+    num_beds = ['Num Beds']
 
     hard_cost_contingency = ["Hard Cost Contingency"]
 
-    fields = ['App Number'] + hard_cost_contingency
+    management_fee = ['Management Fee']
 
+    fields = ['App Number'] + financing
     writer.writerow(fields)
     # for writing a list of lists
-    # for project in data:
-    # writer.writerows(project)
+    for project in data:
+        writer.writerows(project)
     # for writing a single table
-    writer.writerows(data)
+    # writer.writerows(data)
 print("Processing complete!")
