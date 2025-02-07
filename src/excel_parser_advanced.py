@@ -33,14 +33,14 @@ dr = dr()
 
 data = [dr.get_CTCHC_data(i, cells, sheet) for i in excel_paths]
 
-#change this to change the name of the file
-file_type = 'misc'
+# change this to change the name of the file
+file_type = 'amenities'
 
 #writes excel spreadsheet data into a csv file
 folder_name = loading_directory.split('/')[len(loading_directory.split('/')) -
                                            1]
 with open(
-        saving_directory + folder_name + '_' + file_type + '.csv',
+        saving_directory + '/' + folder_name + '_' + file_type + '.csv',
         'w',
         encoding='utf-8',
         newline='',
@@ -181,11 +181,24 @@ with open(
 
     management_fee = ['Management Fee']
 
-    fields = ['App Number'] + financing
+    unit_mix = ['0 Beds', '1 Bed', '2 Beds', '3 Beds', '4 Beds']
+
+    amenity_points = [
+        'Service Coordinator', 'Other Services Specialist', 'Instructor (Big)',
+        'Instructor (Small)', 'Health/Wellness (Big)',
+        'Health/Wellness (Small)', 'Licensed Child Care', 'After School (Big)',
+        'After School (Small)', 'Case Manager', 'Service Coordinator',
+        'Adult Education', 'Health/Behavioral Health', 'Licensed Child Care',
+        'After School Programs'
+    ]
+
+    fields = ['App Number'] + amenity_points
     writer.writerow(fields)
     # for writing a list of lists
-    for project in data:
-        writer.writerows(project)
+
+    # for project in data:
+    #     writer.writerows(project)
     # for writing a single table
-    # writer.writerows(data)
+    writer.writerows(data)
 print("Processing complete!")
+print(f"Saved to:{saving_directory}")

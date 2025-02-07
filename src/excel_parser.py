@@ -163,7 +163,9 @@ with open(
 
     management_fee = ['Management Fee']
 
-    fields = ['App Number'] + financing
+    unit_mix = ['0 Beds', '1 Bed', '2 Beds', '3 Beds', '4 Beds']
+
+    fields = ['App Number'] + unit_mix
     writer.writerow(fields)
     # for writing a list of lists
     for project in data:
